@@ -4,30 +4,44 @@
 import * as React from 'react'
 import '../box-styles.css'
 
-function Box({children, className = '', style, ...restOfProps}) {
+function Box({size = 'small', className = '', style, ...restOfProps}) {
+  const sizeClass =
+    size === 'small'
+      ? 'box--small'
+      : size === 'medium'
+      ? 'box--medium'
+      : size === 'large'
+      ? 'box--large'
+      : null
+  if (sizeClass == null) {
+    console.error('invalid size')
+    return (
+      <div style={{color: 'red'}}>
+        Invalid Size. Cannot render Box component.
+      </div>
+    )
+  }
   return (
     <div
-      className={`box ${className}`}
+      className={`box ${sizeClass} ${className}`}
       style={{fontStyle: 'italic', ...style}}
       {...restOfProps}
-    >
-      {children}
-    </div>
+    />
   )
 }
 
 const smallBox = (
-  <Box className="box--small" style={{backgroundColor: 'lightblue'}}>
+  <Box size="small" style={{backgroundColor: 'lightblue'}}>
     small lightblue box
   </Box>
 )
 const mediumBox = (
-  <Box className="box--medium" style={{backgroundColor: 'pink'}}>
+  <Box size="medium" style={{backgroundColor: 'pink'}}>
     medium pink box
   </Box>
 )
 const largeBox = (
-  <Box className="box--large" style={{backgroundColor: 'orange'}}>
+  <Box size="large" style={{backgroundColor: 'orange'}}>
     large orange box
   </Box>
 )
@@ -38,6 +52,7 @@ function App() {
       {smallBox}
       {mediumBox}
       {largeBox}
+      <Box size="invalid" />
     </div>
   )
 }
